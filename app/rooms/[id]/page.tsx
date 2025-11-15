@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navigation from '@/components/navigation'
 import Footer from '@/components/footer'
 import { Button } from '@/components/ui/button'
@@ -80,16 +80,96 @@ const roomDetails: Record<string, any> = {
       'Chef Service Available',
       'Entertainment System'
     ]
+  },
+  '4': {
+    name: 'Garden Room',
+    price: 2800,
+    priceHourly: 400,
+    category: 'Standard',
+    images: [
+      '/garden-luxury-hotel-room-with-private-patio.jpg',
+      '/garden-luxury-hotel-room-with-private-patio.jpg',
+      '/placeholder.svg?height=600&width=800',
+    ],
+    description: 'Serene garden setting with outdoor access. Our Garden Room offers a peaceful retreat with direct access to beautifully landscaped gardens, perfect for relaxation and tranquility.',
+    amenities: [
+      'Queen Bed',
+      'Garden View',
+      'Private Patio',
+      'Spa Tub',
+      'Air Conditioning',
+      'High-speed WiFi',
+      'Coffee Maker',
+      'Premium Toiletries',
+      'Flat-screen TV',
+      'Mini Bar'
+    ]
+  },
+  '5': {
+    name: 'Penthouse',
+    price: 4800,
+    priceHourly: 700,
+    category: 'Suite',
+    images: [
+      '/luxury-penthouse-suite-with-skyline-view.jpg',
+      '/luxury-penthouse-suite-with-skyline-view.jpg',
+      '/placeholder.svg?height=600&width=800',
+    ],
+    description: 'Exclusive rooftop luxury with panoramic views. The Penthouse offers the ultimate in luxury living with breathtaking city views, private amenities, and unparalleled service.',
+    amenities: [
+      '360° Panoramic Views',
+      'Private Pool',
+      'Cinema Room',
+      'Chef\'s Kitchen',
+      'Sunset Deck',
+      'Helicopter Pad Access',
+      'King Bed',
+      'Multiple Living Areas',
+      'Premium Bar',
+      'Personal Concierge'
+    ]
+  },
+  '6': {
+    name: 'Romantic Studio',
+    price: 2200,
+    priceHourly: 320,
+    category: 'Studio',
+    images: [
+      '/cozy-romantic-hotel-studio-room.jpg',
+      '/cozy-romantic-hotel-studio-room.jpg',
+      '/placeholder.svg?height=600&width=800',
+    ],
+    description: 'Intimate space perfect for couples. Our Romantic Studio creates the perfect atmosphere for a romantic getaway with elegant decor, mood lighting, and special amenities.',
+    amenities: [
+      'Queen Bed',
+      'Fireplace',
+      'Champagne Bar',
+      'Spa Tub',
+      'Rose Garden Access',
+      'Mood Lighting',
+      'Premium Linens',
+      'Air Conditioning',
+      'WiFi',
+      'Flat-screen TV'
+    ]
   }
 }
 
 export default function RoomDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const [imageIndex, setImageIndex] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
-  const id = (params as any).id
-  const room = roomDetails[id]
+  const [id, setId] = useState<string | null>(null)
+  const [room, setRoom] = useState<any>(null)
 
-  if (!room) {
+  useEffect(() => {
+    params.then((resolvedParams) => {
+      const roomId = resolvedParams.id
+      setId(roomId)
+      setRoom(roomDetails[roomId])
+    })
+  }, [params])
+
+  if (!id || !room) {
     return (
       <main className="min-h-screen bg-background">
         <Navigation />
@@ -149,7 +229,7 @@ export default function RoomDetailsPage({ params }: { params: Promise<{ id: stri
 
                 {/* Image Indicators */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                  {room.images.map((_, idx) => (
+                  {room.images.map((_: string, idx: number) => (
                     <button
                       key={idx}
                       onClick={() => setImageIndex(idx)}
@@ -193,9 +273,9 @@ export default function RoomDetailsPage({ params }: { params: Promise<{ id: stri
               <div>
                 <h2 className="font-serif text-2xl font-bold text-foreground mb-6">Amenities</h2>
                 <div className="grid md:grid-cols-2 gap-4">
-                  {room.amenities.map((amenity) => (
+                  {room.amenities.map((amenity: string) => (
                     <div key={amenity} className="flex items-center space-x-3">
-                      <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0" />
+                      <div className="w-2 h-2 bg-primary rounded-full shrink-0" />
                       <span className="text-foreground">{amenity}</span>
                     </div>
                   ))}

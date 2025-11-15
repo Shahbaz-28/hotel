@@ -76,7 +76,7 @@ export default function Navigation() {
         {isOpen && (
           <div className="md:hidden pb-4 space-y-4">
             <Link href="/" className="block text-foreground hover:text-primary transition-colors">Home</Link>
-            <Link href="/rooms" className="block text-foreground hover:text-primary transition-colors">Rooms / Properties</Link>
+            <Link href="/rooms" className="block text-foreground hover:text-primary transition-colors">Rooms</Link>
             <Link href="/booking" className="block text-foreground hover:text-primary transition-colors">Booking</Link>
             <Link href="#contact" className="block text-foreground hover:text-primary transition-colors">Contact</Link>
             <div className="flex space-x-4 pt-4">
